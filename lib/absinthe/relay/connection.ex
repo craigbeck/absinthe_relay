@@ -313,7 +313,7 @@ defmodule Absinthe.Relay.Connection do
       last_preslice_cursor = offset_to_cursor(Enum.min([end_at, count]) - 1)
 
       end_at = if first, do: Enum.min([begin_at + first, end_at]), else: end_at
-      begin_at = if last, do: Enum.map([end_at - last, begin_at]), else: begin_at
+      begin_at = if last, do: Enum.max([end_at - last, begin_at]), else: begin_at
 
       sliced_data = Enum.slice(data, begin_at, end_at - begin_at)
       edges = sliced_data

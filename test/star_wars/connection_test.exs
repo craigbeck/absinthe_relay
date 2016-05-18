@@ -35,6 +35,38 @@ defmodule StarWars.ConnectionTest do
       assert {:ok, %{data: expected}} == Absinthe.run(query, StarWars.Schema)
     end
 
+    it "fetches the last ship of the rebels" do
+      query = """
+        query RebelsShipsQuery {
+          rebels {
+            name,
+            ships(last: 1) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }
+      """
+      expected = %{
+        "rebels" => %{
+          "name" => "Alliance to Restore the Republic",
+          "ships" => %{
+            "edges" => [
+              %{
+                "node" => %{
+                  "name" => "Home One"
+                }
+              }
+            ]
+          }
+        }
+      }
+      assert {:ok, %{data: expected}} == Absinthe.run(query, StarWars.Schema)
+    end
+
     @tag :focus
     it "fetches the first two ships of the rebels with a cursor" do
       query = """
